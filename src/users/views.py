@@ -9,7 +9,7 @@ from src.users.permissions import IsUserOrReadOnly
 from src.users.serializers import CreateUserSerializer, UserSerializer
 
 
-class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
+class UserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
     Creates, Updates and Retrieves - User Accounts
     """
@@ -30,4 +30,4 @@ class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.Cre
         try:
             return Response(UserSerializer(self.request.user, context={'request': self.request}).data, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({'error': 'Wrong auth token' + e}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Wrong auth token' + str(e)}, status=status.HTTP_400_BAD_REQUEST)

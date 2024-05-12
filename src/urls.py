@@ -15,6 +15,7 @@ from drf_yasg import openapi
 from src.social.views import exchange_token, complete_twitter_login
 from src.files.urls import files_router
 from src.users.urls import users_router
+from src.academy.urls import academy_router
 
 schema_view = get_schema_view(
     openapi.Info(title="Pastebin API", default_version='v1'),
@@ -25,6 +26,7 @@ router = DefaultRouter()
 
 router.registry.extend(users_router.registry)
 router.registry.extend(files_router.registry)
+router.registry.extend(academy_router.registry)
 
 urlpatterns = [
     # admin panel
