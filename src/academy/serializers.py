@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Lesson, LessonProgress, TestAttempt, Test
+from .models import Lesson, LessonProgress, TestAttempt, Test, Broker
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -7,7 +7,7 @@ class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = ['id', 'title', 'content', 'is_done']
+        fields = ['id', 'title', 'content', 'is_done', 'order']
 
     def get_is_done(self, obj):
         user = self.context['request'].user
@@ -41,8 +41,13 @@ class TestSerializer(serializers.ModelSerializer):
         return test_attempt is not None and test_attempt.is_answer_correct is True
 
 
-
 class TestAttemptSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestAttempt
         fields = ['user', 'test', 'selected_answer', 'is_answer_correct']
+
+
+class BrokerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Broker
+        fields = ['broker_name', 'min_deposit', 'link', 'broker_image']

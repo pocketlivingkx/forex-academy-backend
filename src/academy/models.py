@@ -5,9 +5,13 @@ from src.users.models import User
 class Lesson(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
+    order = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['order']
 
 
 class LessonProgress(models.Model):
@@ -46,3 +50,14 @@ class TestAttempt(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.test.question} - {"Correct" if self.is_answer_correct else "Incorrect"}'
+
+
+
+class Broker(models.Model):
+    broker_name = models.CharField(max_length=200)
+    min_deposit = models.IntegerField()
+    link = models.URLField(max_length=200)
+    broker_image = models.URLField(max_length=200)
+
+    def __str__(self):
+        return self.broker_name
