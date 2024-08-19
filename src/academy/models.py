@@ -58,6 +58,14 @@ class Broker(models.Model):
     min_deposit = models.IntegerField()
     link = models.URLField(max_length=200)
     broker_image = models.URLField(max_length=200)
+    description = models.TextField()
 
     def __str__(self):
         return self.broker_name
+
+# models.py
+class BrokerInfo(models.Model):
+    info = models.TextField()
+
+    def __str__(self):
+        return "Broker Information"

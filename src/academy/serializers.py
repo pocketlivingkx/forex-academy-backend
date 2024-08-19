@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Lesson, LessonProgress, TestAttempt, Test, Broker
+from .models import Lesson, LessonProgress, TestAttempt, Test, Broker, BrokerInfo
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -50,4 +50,11 @@ class TestAttemptSerializer(serializers.ModelSerializer):
 class BrokerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Broker
-        fields = ['broker_name', 'min_deposit', 'link', 'broker_image']
+        fields = ['broker_name', 'min_deposit', 'link', 'broker_image', 'description']
+
+
+# serializers.py
+class BrokerInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BrokerInfo
+        fields = ['info']

@@ -4,8 +4,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import MethodNotAllowed
 from src.users.permissions import IsUserOrReadOnly
 
-from .models import Lesson, LessonProgress, TestAttempt, Test, Broker
-from .serializers import LessonSerializer, LessonProgressSerializer, TestAttemptSerializer, TestSerializer, BrokerSerializer
+from .models import Lesson, LessonProgress, TestAttempt, Test, Broker, BrokerInfo
+from .serializers import (LessonSerializer, LessonProgressSerializer, TestAttemptSerializer, TestSerializer,
+                          BrokerSerializer, BrokerInfoSerializer)
 
 
 class LessonViewSet(viewsets.ModelViewSet):
@@ -164,9 +165,23 @@ class TestAttemptViewSet(viewsets.ModelViewSet):
 class BrokerViewSet(viewsets.ModelViewSet):
     queryset = Broker.objects.all()
     serializer_class = BrokerSerializer
+    permission_classes = [IsAuthenticated, IsUserOrReadOnly]
 
     def create(self, request, *args, **kwargs):
         raise MethodNotAllowed('POST')
 
     def update(self, request, *args, **kwargs):
         raise MethodNotAllowed('PUT')
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+
+        broker_info = BrokerInfo.objects.first()
+        broker_info_serializer = BrokerInfoSerializer(broker_info)
+
+        # Add the broker information to the response
+        return Response({
+            'data': serializer.data,
+            'broker_info': broker_info_serializer.data,
+        })
